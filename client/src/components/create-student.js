@@ -7,6 +7,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import { styled } from "@mui/material";
+import Typography from '@mui/material/Typography';
+
+const FormControl = styled('div')(
+    ({ theme }) => `
+    flex: 1;
+    margin:10px;
+  `,
+);
 
 const CreateStudent = () => {
 
@@ -36,7 +45,6 @@ const CreateStudent = () => {
     }
 
     const insertStudent = () => {
-        console.log('insertStudent called')
         const newStudent = { ...student };
         fetch('http://localhost:5000/student/add', {
             method: 'POST',
@@ -58,15 +66,17 @@ const CreateStudent = () => {
             <Card sx={{ minWidth: 275 }}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <CardContent>
-                        <div>Enter student information</div>
+                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            Enter student information
+                        </Typography>
                         <form>
-                            <div>
-                                <TextField label="name" variant="outlined" value={student.name} onChange={(event) => formChange({ name: event.target.value })} />
-                            </div>
-                            <div>
-                                <TextField label="phone" variant="outlined" value={student.phone} onChange={(event) => formChange({ phone: event.target.value })} />
-                            </div>
-                            <div>
+                            <FormControl>
+                                <TextField label="Name" variant="outlined" value={student.name} onChange={(event) => formChange({ name: event.target.value })} />
+                            </FormControl>
+                            <FormControl>
+                                <TextField label="Phone" variant="outlined" value={student.phone} onChange={(event) => formChange({ phone: event.target.value })} />
+                            </FormControl>
+                            <FormControl>
                                 <DesktopDatePicker
                                     label="Date of Birth"
                                     inputFormat="dd/MM/yyyy"
@@ -74,8 +84,8 @@ const CreateStudent = () => {
                                     onChange={(value) => formChange({ dob: value })}
                                     renderInput={(params) => <TextField {...params} />}
                                 />
-                            </div>
-                            <div>
+                            </FormControl>
+                            <FormControl>
                                 <DesktopDatePicker
                                     label="Date Of Joining"
                                     inputFormat="dd/MM/yyyy"
@@ -83,7 +93,7 @@ const CreateStudent = () => {
                                     onChange={(value) => formChange({ doj: value })}
                                     renderInput={(params) => <TextField {...params} />}
                                 />
-                            </div>
+                            </FormControl>
                         </form>
                     </CardContent>
                     <CardActions>
