@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
     { field: 'name', headerName: 'Name', width: 150 },
     { field: 'phone', headerName: 'Phone', width: 150 },
     { field: 'doj', headerName: 'Date of Joining', width: 110 }
@@ -31,12 +30,12 @@ const StudentList = () => {
     }
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div style={{ height: 700, width: '100%' }}>
             <DataGrid
                 rows={students}
                 columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
                 checkboxSelection
                 disableSelectionOnClick
                 onRowClick={(e) => editStudent(e.row.id)}

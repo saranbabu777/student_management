@@ -15,6 +15,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { styled } from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
+import { useNavigate } from 'react-router-dom';
 
 const StyleForm = styled('form')(
     ({ theme }) => `
@@ -66,6 +67,7 @@ const EditStudent = () => {
     const [newFeesForm, setNewFeesForm] = useState(false);
 
     const params = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const id = params.id.toString();
@@ -111,6 +113,17 @@ const EditStudent = () => {
 
     }
 
+    const deleteStudent = () => {
+        fetch(`http://localhost:5000/student/delete/${student._id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then(response => {
+            navigate(`/`);
+        })
+    }
+
     return (
         <div>
             <div>
@@ -131,6 +144,7 @@ const EditStudent = () => {
                     </CardContent>
                     <CardActions>
                         <Button size="small" onClick={() => editStudent()}>Edit</Button>
+                        <Button size="small" onClick={() => deleteStudent()}>Delete</Button>
                     </CardActions>
                 </Card>
             </div>
