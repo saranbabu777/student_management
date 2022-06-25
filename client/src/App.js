@@ -4,6 +4,7 @@ import CreateStudent from './components/create-student';
 import EditStudent from './components/edit-student';
 import StudentList from './components/student-list';
 import Navbar from './components/navbar';
+import AddFees from './components/add-fees';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<StudentList />} />
         <Route path="/create" element={<CreateStudent />} />
+        <Route path="/add-fees" element={<AddFees />} />
         <Route path="/edit/:id" element={<EditStudent />} />
       </Routes>
 
