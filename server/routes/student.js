@@ -39,6 +39,7 @@ studentRoutes.route("/student/add").post(function (req, response) {
         doj: req.body.doj,
         dob: req.body.dob,
         phone: req.body.phone,
+        active: req.body.active,
         fees: req.body.fees ? req.body.fees : []
     };
     db_connect.collection("students").insertOne(myobj, function (err, res) {
@@ -57,6 +58,7 @@ studentRoutes.route("/student/update/:id").post(function (req, response) {
             doj: req.body.doj,
             dob: req.body.dob,
             phone: req.body.phone,
+            active: req.body.active,
             fees: req.body.fees
         },
     }

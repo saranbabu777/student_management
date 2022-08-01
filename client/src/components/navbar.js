@@ -51,6 +51,9 @@ const Navbar = () => {
                     <StyledLink to="/add-fees">
                         Add Fees
                     </StyledLink>
+                    <StyledLink to="/fees">
+                        Fees
+                    </StyledLink>
                 </StyledNav>
             </Toolbar>
         </AppBar>

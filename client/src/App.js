@@ -5,6 +5,7 @@ import EditStudent from './components/edit-student';
 import StudentList from './components/student-list';
 import Navbar from './components/navbar';
 import AddFees from './components/add-fees';
+import FeeList from './components/fee-list';
 
 function App() {
   return (
@@ -14,9 +15,9 @@ function App() {
         <Route exact path="/" element={<StudentList />} />
         <Route path="/create" element={<CreateStudent />} />
         <Route path="/add-fees" element={<AddFees />} />
+        <Route path="/fees" element={<FeeList />} />
         <Route path="/edit/:id" element={<EditStudent />} />
       </Routes>
-
     </div>
   );
 }

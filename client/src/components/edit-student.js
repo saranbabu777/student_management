@@ -109,6 +109,20 @@ const EditStudent = () => {
         })
     }
 
+    const activateStudent = (status) => {
+        fetch(`http://localhost:5000/student/update/${student._id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ...student, active: status })
+        }).then(response => {
+            setStudent(prevValue => {
+                return { ...prevValue, active: status }
+            })
+        })
+    }
+
     const editStudent = () => {
 
     }
@@ -145,6 +159,8 @@ const EditStudent = () => {
                     <CardActions>
                         <Button size="small" onClick={() => editStudent()}>Edit</Button>
                         <Button size="small" onClick={() => deleteStudent()}>Delete</Button>
+                        <Button size="small" onClick={() => activateStudent(true)}>Activate</Button>
+                        <Button size="small" onClick={() => activateStudent(false)}>Deactivate</Button>
                     </CardActions>
                 </Card>
             </div>
