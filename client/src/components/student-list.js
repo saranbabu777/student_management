@@ -78,7 +78,7 @@ const StudentList = () => {
     const showRows = [...students].filter(({ name, fees }) => {
         let showItem = true;
         if (filter.q) {
-            showItem = name.startsWith(filter.q);
+            showItem = name.toLowerCase().startsWith(filter.q.toLowerCase());
         }
         if (filter.month) {
             const paid = fees.filter(x => (x.month === filter.month && x.year == YEAR)).length > 0;
