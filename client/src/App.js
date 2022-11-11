@@ -6,6 +6,7 @@ import StudentList from './components/student-list';
 import Navbar from './components/navbar';
 import AddFees from './components/add-fees';
 import FeeList from './components/fee-list';
+import Tournament from './components/tournament';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/add-fees" element={<AddFees />} />
         <Route path="/fees" element={<FeeList />} />
         <Route path="/edit/:id" element={<EditStudent />} />
+        <Route path="/tournament" element={<Tournament />} />
       </Routes>
     </div>
   );

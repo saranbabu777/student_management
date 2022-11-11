@@ -54,6 +54,9 @@ const Navbar = () => {
                     <StyledLink to="/fees">
                         Fees
                     </StyledLink>
+                    <StyledLink to="/tournament">
+                        POOL A (29/10/2022)
+                    </StyledLink>
                 </StyledNav>
             </Toolbar>
         </AppBar>
