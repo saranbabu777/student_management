@@ -16,6 +16,9 @@ import Typography from '@mui/material/Typography';
 import { styled } from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import { useNavigate } from 'react-router-dom';
+import { DesktopDatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const StyleForm = styled('form')(
     ({ theme }) => `
@@ -65,6 +68,7 @@ const EditStudent = () => {
     })
     const [student, setStudent] = useState("");
     const [newFeesForm, setNewFeesForm] = useState(false);
+    const [editStudentForm, setEditStudentForm] = useState(false);
 
     const params = useParams();
     const navigate = useNavigate();
@@ -109,22 +113,42 @@ const EditStudent = () => {
         })
     }
 
-    const activateStudent = (status) => {
+    const updateStudent = (updatedFeilds) => {
         fetch(`http://localhost:5000/student/update/${student._id}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ ...student, active: status })
+            body: JSON.stringify({ ...student, ...updatedFeilds })
         }).then(response => {
             setStudent(prevValue => {
-                return { ...prevValue, active: status }
+                return { ...prevValue, ...updatedFeilds }
             })
         })
     }
 
     const editStudent = () => {
+        setEditStudentForm(prevValue => {
+            return !prevValue;
+        });
+    }
 
+    const formChange = (change) => {
+        if (change.dob) {
+            const yr = change.dob.getFullYear();
+            const mn = change.dob.getMonth() + 1;
+            const dy = change.dob.getDate();
+            change.dob = `${yr}-${mn}-${dy}`;
+        }
+        if (change.doj) {
+            const yr = change.doj.getFullYear();
+            const mn = change.doj.getMonth() + 1;
+            const dy = change.doj.getDate();
+            change.doj = `${yr}-${mn}-${dy}`;
+        }
+        setStudent((prevState) => {
+            return { ...prevState, ...change }
+        })
     }
 
     const deleteStudent = () => {
@@ -141,28 +165,64 @@ const EditStudent = () => {
     return (
         <div>
             <div>
-                <Card sx={{ minWidth: 275 }}>
-                    <CardContent>
-                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            Name: {student.name}
-                        </Typography>
-                        <Typography x={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            Phone: {student.phone}
-                        </Typography>
-                        <Typography x={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            DOB: {student.dob}
-                        </Typography>
-                        <Typography x={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                            DOJ: {student.doj}
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button size="small" onClick={() => editStudent()}>Edit</Button>
-                        <Button size="small" onClick={() => deleteStudent()}>Delete</Button>
-                        <Button size="small" onClick={() => activateStudent(true)}>Activate</Button>
-                        <Button size="small" onClick={() => activateStudent(false)}>Deactivate</Button>
-                    </CardActions>
-                </Card>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <Card sx={{ minWidth: 275 }}>
+                        {!editStudentForm ?
+                            <CardContent>
+                                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                    Name: {student.name}
+                                </Typography>
+                                <Typography x={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                    Phone: {student.phone}
+                                </Typography>
+                                <Typography x={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                    DOB: {student.dob}
+                                </Typography>
+                                <Typography x={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                    DOJ: {student.doj}
+                                </Typography>
+                            </CardContent>
+                            :
+                            <CardContent>
+                                <form>
+                                    <FormControl>
+                                        <TextField label="Name" variant="outlined" value={student.name} onChange={(event) => formChange({ name: event.target.value })} />
+                                    </FormControl>
+                                    <FormControl>
+                                        <TextField label="Phone" variant="outlined" value={student.phone} onChange={(event) => formChange({ phone: event.target.value })} />
+                                    </FormControl>
+                                    <FormControl>
+                                        <DesktopDatePicker
+                                            label="Date of Birth"
+                                            inputFormat="dd/MM/yyyy"
+                                            value={student.dob}
+                                            onChange={(value) => formChange({ dob: value })}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </FormControl>
+                                    <FormControl>
+                                        <DesktopDatePicker
+                                            label="Date Of Joining"
+                                            inputFormat="dd/MM/yyyy"
+                                            value={student.doj}
+                                            onChange={(value) => formChange({ doj: value })}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </FormControl>
+                                </form>
+                            </CardContent>
+                        }
+                        <CardActions>
+                            {editStudentForm ?
+                                <Button size="small" onClick={() => updateStudent({})}>Save Changes</Button>
+                                : null}
+                            <Button size="small" onClick={() => editStudent()}>Edit</Button>
+                            <Button size="small" onClick={() => deleteStudent()}>Delete</Button>
+                            <Button size="small" onClick={() => updateStudent({ active: true })}>Activate</Button>
+                            <Button size="small" onClick={() => updateStudent({ active: false })}>Deactivate</Button>
+                        </CardActions>
+                    </Card>
+                </LocalizationProvider>
             </div>
             <StyleTable>
                 <TableContainer component={Paper}>
