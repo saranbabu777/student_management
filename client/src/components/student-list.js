@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Autocomplete from '@mui/material/Autocomplete';
 import { styled } from "@mui/material";
@@ -24,6 +23,7 @@ const columns = [
     { field: 'phone', headerName: 'Phone', width: 150 },
     { field: 'doj', headerName: 'Date of Joining', width: 110 },
     { field: 'active', headerName: 'Active', width: 110 },
+    { field: 'paidMonths', headerName: 'Paid Months', width: 700 },
 ]
 
 const monthList = [
@@ -60,7 +60,13 @@ const StudentList = () => {
         fetch('http://localhost:5000/student', {
             method: 'GET'
         }).then(response => response.json()).then(response => {
-            response = response.map(x => { return { ...x, id: x._id, active: x.active ? 'Active' : 'Inactive' } })
+            response = response.map(x => {
+                return {
+                    ...x, id: x._id,
+                    active: x.active ? 'Active' : 'Inactive',
+                    paidMonths: x.fees.map(y => y.month + ' ' + y.year).join(', ')
+                }
+            })
             setStudents(response);
         })
     }
